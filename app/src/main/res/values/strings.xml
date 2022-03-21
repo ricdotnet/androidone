@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">AndroidOne</string>
+
+    <!-- Login Activity -->
+    <string name="login_screen">Login Screen Here</string>
+    <string name="login_button">Login</string>
+    <string name="register_link">Register</string>
+    <string name="recover_password_link">Recover Password</string>
+    <string name="login_username_hint">Username</string>
+    <string name="login_password_hint">Password</string>
+
+    <!-- Register Activity -->
+    <string name="register_screen">Register Screen Here what</string>
+
+</resources>
