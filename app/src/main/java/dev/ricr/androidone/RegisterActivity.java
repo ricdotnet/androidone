@@ -5,18 +5,28 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 
 public class RegisterActivity extends AppCompatActivity {
 
-    Button someButton;
+  EditText usernameInput, passwordInput, emailInput;
+  Button registerButton;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_register);
+  @Override
+  protected void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    setContentView(R.layout.activity_register);
 
-        someButton = findViewById(R.id.some_button);
-        someButton.setVisibility(View.INVISIBLE);
+    registerButton = findViewById(R.id.register_button);
 
-    }
+    setListeners();
+  }
+
+  private void doRegister(View view) {
+    System.out.println("registering user....");
+  }
+
+  private void setListeners() {
+    registerButton.setOnClickListener(this::doRegister);
+  }
 }

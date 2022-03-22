@@ -12,67 +12,71 @@ import android.widget.TextView;
 import com.google.android.material.snackbar.Snackbar;
 
 import dev.ricr.androidone.Auth.LoginTask;
+import dev.ricr.androidone.Views.DashboardActivity;
 
 public class LoginActivity extends AppCompatActivity {
 
-    TextView registerLink, recoverPasswordLink;
-    EditText usernameInput, passwordInput;
-    Button loginButton;
+  TextView registerLink, recoverPasswordLink;
+  EditText usernameInput, passwordInput;
+  Button loginButton;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
+  View currentView;
 
-        registerLink = findViewById(R.id.register_link);
-        recoverPasswordLink = findViewById(R.id.recover_password_link);
-        usernameInput = findViewById(R.id.username_input);
-        passwordInput = findViewById(R.id.password_input);
-        loginButton = findViewById(R.id.login_button);
+  @Override
+  protected void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    setContentView(R.layout.activity_login);
+    currentView = findViewById(R.id.relativeLayout);
 
-        setListeners();
+    registerLink = findViewById(R.id.register_link);
+    recoverPasswordLink = findViewById(R.id.recover_password_link);
+    usernameInput = findViewById(R.id.username_input);
+    passwordInput = findViewById(R.id.password_input);
+    loginButton = findViewById(R.id.login_button);
+
+    setListeners();
+  }
+
+  public void onDoLogin(View view) {
+    String username = usernameInput.getText().toString();
+    String password = passwordInput.getText().toString();
+
+    if (username.isEmpty()) {
+      Snackbar.make(view, "Invalid username.", 5000).show();
+      return;
     }
 
-    public void onDoLogin(View view) {
-        String username = usernameInput.getText().toString();
-        String password = passwordInput.getText().toString();
-
-        if (username.isEmpty() || !username.equals("ricdotnet")) {
-            Snackbar.make(view, "Invalid username.", 5000).show();
-            return;
-        }
-
-        if (password.isEmpty() || !password.equals("12345")) {
-            Snackbar.make(view, "Invalid password.", 5000).show();
-            return;
-        }
-
-        new LoginTask().doLogin(username, password, this);
-//        Snackbar.make(view, "Logged in.", 5000).show();
-
+    if (password.isEmpty()) {
+      Snackbar.make(view, "Invalid password.", 5000).show();
+      return;
     }
 
-    public void onLoginSuccess() {
-        View current = this.getCurrentFocus();
-        Snackbar.make(current, "Logged with success", 5000).show();
-    }
+    new LoginTask().doLogin(username, password, this);
+  }
 
-    public Runnable onLoginError() {
-        return null;
-    }
+  public void onLoginSuccess(String string) {
+    Snackbar.make(currentView, "Logged with success", 5000).show();
+    Intent intent = new Intent(this, DashboardActivity.class);
+    intent.putExtra("response", string);
+    startActivity(intent);
+  }
 
-    public void onRegisterClick(View view) {
-        Intent intent = new Intent(this, RegisterActivity.class);
-        startActivity(intent);
-    }
+  public void onLoginError(String string) {
+    Snackbar.make(currentView, string, 5000).show();
+  }
 
-    public void onRecoverClick(View view) {
-        System.out.println("clicked the recover password link");
-    }
+  public void onRegisterClick(View view) {
+    Intent intent = new Intent(this, RegisterActivity.class);
+    startActivity(intent);
+  }
 
-    private void setListeners() {
-        loginButton.setOnClickListener(this::onDoLogin);
-        registerLink.setOnClickListener(this::onRegisterClick);
-        recoverPasswordLink.setOnClickListener(this::onRecoverClick);
-    }
+  public void onRecoverClick(View view) {
+    System.out.println("clicked the recover password link");
+  }
+
+  private void setListeners() {
+    loginButton.setOnClickListener(this::onDoLogin);
+    registerLink.setOnClickListener(this::onRegisterClick);
+    recoverPasswordLink.setOnClickListener(this::onRecoverClick);
+  }
 }
