@@ -13,7 +13,7 @@ public class LoginTask implements Executor {
 
   private void handleLogin(String username, String password, LoginActivity c) {
     String body = "{\"username\":\"" + username + "\", \"password\": \"" + password + "\" }";
-    HttpHandler http = new HttpHandler("https://api.unispaces.uk/login", "POST", body);
+    HttpHandler http = new HttpHandler("http://10.0.2.2:4000/user/login", "POST", body);
 
     if (http.getErrorCode() == 200) {
       c.onLoginSuccess(http.getServerResponse());

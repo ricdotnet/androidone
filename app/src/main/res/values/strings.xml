@@ -2,7 +2,6 @@
   <string name="app_name">AndroidOne</string>
 
   <!-- Login Activity -->
-  <string name="login_screen">Login Screen Here</string>
   <string name="login_button">Login</string>
   <string name="register_link">Register</string>
   <string name="recover_password_link">Recover Password</string>
@@ -10,10 +9,23 @@
   <string name="login_password_hint">Password</string>
 
   <!-- Register Activity -->
-  <string name="register_screen">Register Screen Here what</string>
   <string name="register_button">Register</string>
   <string name="register_username_hint">Username</string>
   <string name="register_password_hint">Password</string>
   <string name="register_email_hint">Email</string>
+  <string name="login_link">Login</string>
+  <!-- TODO: Remove or change this placeholder text -->
+  <string name="hello_blank_fragment">Hello blank fragment</string>
+  <string name="dummy_button">Dummy Button</string>
+  <string name="dummy_content">DUMMY\nCONTENT</string>
+  <string name="title_activity_recover_password">RecoverPasswordActivity</string>
+  <!-- Strings used for fragments for navigation -->
+  <string name="first_fragment_label">First Fragment</string>
+  <string name="second_fragment_label">Second Fragment</string>
+  <string name="next">Next</string>
+  <string name="previous">Previous</string>
+
+  <string name="hello_first_fragment">Hello first fragment</string>
+  <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
 
 </resources>

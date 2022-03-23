@@ -2,7 +2,9 @@ package dev.ricr.androidone;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
@@ -13,6 +15,7 @@ import com.google.android.material.snackbar.Snackbar;
 
 import dev.ricr.androidone.Auth.LoginTask;
 import dev.ricr.androidone.Views.DashboardActivity;
+import dev.ricr.androidone.Views.RecoverPasswordActivity;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -33,6 +36,10 @@ public class LoginActivity extends AppCompatActivity {
     usernameInput = findViewById(R.id.username_input);
     passwordInput = findViewById(R.id.password_input);
     loginButton = findViewById(R.id.login_button);
+
+    SharedPreferences data = getSharedPreferences("data", Context.MODE_PRIVATE);
+    data.edit().putString("username", "ricdotnet").apply();
+    System.out.println(data.getString("username", null));
 
     setListeners();
   }
@@ -71,7 +78,9 @@ public class LoginActivity extends AppCompatActivity {
   }
 
   public void onRecoverClick(View view) {
-    System.out.println("clicked the recover password link");
+//    System.out.println("clicked the recover password link");
+    Intent intent = new Intent(this, RecoverPasswordActivity.class);
+    startActivity(intent);
   }
 
   private void setListeners() {
