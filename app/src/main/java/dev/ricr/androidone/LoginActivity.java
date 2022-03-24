@@ -25,6 +25,8 @@ public class LoginActivity extends AppCompatActivity {
 
   View currentView;
 
+  SharedPreferences userData;
+
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -37,11 +39,20 @@ public class LoginActivity extends AppCompatActivity {
     passwordInput = findViewById(R.id.password_input);
     loginButton = findViewById(R.id.login_button);
 
-    SharedPreferences data = getSharedPreferences("data", Context.MODE_PRIVATE);
-    data.edit().putString("username", "ricdotnet").apply();
-    System.out.println(data.getString("username", null));
+    userData = getSharedPreferences("userData", Context.MODE_PRIVATE);
 
     setListeners();
+  }
+
+  @Override
+  public void onResume() {
+    super.onResume();
+    String currentUser = userData.getString("username", null);
+
+    if (currentUser != null) {
+      Intent intent = new Intent(this, DashboardActivity.class);
+      startActivity(intent);
+    }
   }
 
   public void onDoLogin(View view) {
@@ -64,6 +75,10 @@ public class LoginActivity extends AppCompatActivity {
   public void onLoginSuccess(String string) {
     Snackbar.make(currentView, "Logged with success", 5000).show();
     Intent intent = new Intent(this, DashboardActivity.class);
+
+    SharedPreferences userData = getSharedPreferences("userData", Context.MODE_PRIVATE);
+    userData.edit().putString("username", usernameInput.getText().toString()).apply();
+
     intent.putExtra("response", string);
     startActivity(intent);
   }
