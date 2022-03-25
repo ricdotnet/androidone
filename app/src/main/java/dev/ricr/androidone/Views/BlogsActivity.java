@@ -9,6 +9,7 @@ import android.view.MenuItem;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import dev.ricr.androidone.Fragments.BlogsFragment;
 import dev.ricr.androidone.Fragments.DashboardFragment;
 import dev.ricr.androidone.R;
 
@@ -27,14 +28,19 @@ public class BlogsActivity extends AppCompatActivity implements BottomNavigation
 //    bottomNavigationView.setSelectedItemId(R.id.activity_blogs);
   }
 
+  @Override
+  public void onResume() {
+    super.onResume();
+    getSupportFragmentManager().beginTransaction().replace(R.id.container, blogsFragment).commit();
+  }
+
+  BlogsFragment blogsFragment = new BlogsFragment();
   DashboardFragment dashboardFragment = new DashboardFragment();
 
   @Override
   public boolean onNavigationItemSelected(@NonNull MenuItem item) {
     if (item.getItemId() == R.id.menu_blogs) {
-//      System.out.println("going to blogs page");
-      Intent intent = new Intent(this, BlogsActivity.class);
-      startActivity(intent);
+      getSupportFragmentManager().beginTransaction().replace(R.id.container, blogsFragment).commit();
       return true;
     }
 

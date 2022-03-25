@@ -50,7 +50,7 @@ public class LoginActivity extends AppCompatActivity {
     String currentUser = userData.getString("username", null);
 
     if (currentUser != null) {
-      Intent intent = new Intent(this, DashboardActivity.class);
+      Intent intent = new Intent(this, BlogsActivity.class);
       startActivity(intent);
     }
   }
