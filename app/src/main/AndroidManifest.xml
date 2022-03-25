@@ -13,6 +13,9 @@
     android:theme="@style/Theme.AndroidOne"
     android:usesCleartextTraffic="true">
     <activity
+      android:name=".Views.BlogsActivity"
+      android:exported="false" />
+    <activity
       android:name=".Views.RecoverPasswordActivity"
       android:exported="false" />
     <activity

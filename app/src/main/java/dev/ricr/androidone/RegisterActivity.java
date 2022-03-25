@@ -70,11 +70,11 @@ public class RegisterActivity extends AppCompatActivity {
     loginLink.setOnClickListener(this::goToLogin);
   }
 
-  public void onRegisterSuccess() {
-    Snackbar.make(getCurrentFocus(), "Registered with success.", 5000).show();
+  public void onRegisterSuccess(String response) {
+    Snackbar.make(getCurrentFocus(), response, 5000).show();
   }
 
-  public void onRegisterError() {
-    Snackbar.make(getCurrentFocus(), "Something went wrong.", 5000).show();
+  public void onRegisterError(String response) {
+    Snackbar.make(getCurrentFocus(), response, 5000).show();
   }
 }

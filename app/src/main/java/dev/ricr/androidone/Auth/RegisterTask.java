@@ -12,13 +12,17 @@ public class RegisterTask implements Executor {
   }
 
   private void handleRegister(String username, String password, String email, RegisterActivity c) {
-    String body = "{\"username\":\"" + username + "\", \"password\": \"" + password + "\" }";
+    String body = "{\"username\":\"" + username
+        + "\", \"password\": \"" + password
+        + "\", \"email\": \"" + email
+        + "\" }";
+    System.out.println(body);
     HttpHandler http = new HttpHandler("http://10.0.2.2:4001/user/register", "POST", body);
 
     if (http.getErrorCode() == 200) {
-      c.onRegisterSuccess();
+      c.onRegisterSuccess(http.getServerResponse());
     } else {
-      c.onRegisterError();
+      c.onRegisterError(http.getServerResponse());
     }
   }
 
