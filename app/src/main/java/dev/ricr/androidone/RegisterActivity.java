@@ -9,6 +9,11 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.google.android.material.snackbar.Snackbar;
+
+import dev.ricr.androidone.Auth.RegisterTask;
+import dev.ricr.androidone.Helpers.InputHelper;
+
 public class RegisterActivity extends AppCompatActivity {
 
   EditText usernameInput, passwordInput, emailInput;
@@ -20,6 +25,10 @@ public class RegisterActivity extends AppCompatActivity {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_register);
 
+    usernameInput = findViewById(R.id.register_username);
+    passwordInput = findViewById(R.id.register_password);
+    emailInput = findViewById(R.id.register_email);
+
     registerButton = findViewById(R.id.register_button);
     loginLink = findViewById(R.id.login_link);
 
@@ -27,7 +36,28 @@ public class RegisterActivity extends AppCompatActivity {
   }
 
   private void doRegister(View view) {
-    System.out.println("registering user....");
+    String username = usernameInput.getText().toString();
+    String password = passwordInput.getText().toString();
+    String email = emailInput.getText().toString();
+
+    InputHelper.closeKeyboard(this, view);
+
+    if (username.isEmpty()) {
+      Snackbar.make(view, "Enter a username.", 5000).show();
+      return;
+    }
+
+    if (password.isEmpty()) {
+      Snackbar.make(view, "Enter a password.", 5000).show();
+      return;
+    }
+
+    if (email.isEmpty()) {
+      Snackbar.make(view, "Enter an email.", 5000).show();
+      return;
+    }
+
+    new RegisterTask().doRegister(username, password, email, this);
   }
 
   private void goToLogin(View view) {
@@ -38,5 +68,13 @@ public class RegisterActivity extends AppCompatActivity {
   private void setListeners() {
     registerButton.setOnClickListener(this::doRegister);
     loginLink.setOnClickListener(this::goToLogin);
+  }
+
+  public void onRegisterSuccess() {
+    Snackbar.make(getCurrentFocus(), "Registered with success.", 5000).show();
+  }
+
+  public void onRegisterError() {
+    Snackbar.make(getCurrentFocus(), "Something went wrong.", 5000).show();
   }
 }

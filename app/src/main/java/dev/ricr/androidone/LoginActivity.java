@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.Button;
 import android.widget.TextView;
@@ -14,6 +15,7 @@ import android.widget.TextView;
 import com.google.android.material.snackbar.Snackbar;
 
 import dev.ricr.androidone.Auth.LoginTask;
+import dev.ricr.androidone.Helpers.InputHelper;
 import dev.ricr.androidone.Views.DashboardActivity;
 import dev.ricr.androidone.Views.RecoverPasswordActivity;
 
@@ -23,15 +25,12 @@ public class LoginActivity extends AppCompatActivity {
   EditText usernameInput, passwordInput;
   Button loginButton;
 
-  View currentView;
-
   SharedPreferences userData;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_login);
-    currentView = findViewById(R.id.relativeLayout);
 
     registerLink = findViewById(R.id.register_link);
     recoverPasswordLink = findViewById(R.id.recover_password_link);
@@ -56,16 +55,18 @@ public class LoginActivity extends AppCompatActivity {
   }
 
   public void onDoLogin(View view) {
+    InputHelper.closeKeyboard(this, view);
+
     String username = usernameInput.getText().toString();
     String password = passwordInput.getText().toString();
 
     if (username.isEmpty()) {
-      Snackbar.make(view, "Invalid username.", 5000).show();
+      Snackbar.make(view, "Enter a username.", 5000).show();
       return;
     }
 
     if (password.isEmpty()) {
-      Snackbar.make(view, "Invalid password.", 5000).show();
+      Snackbar.make(view, "Enter a password.", 5000).show();
       return;
     }
 
@@ -73,7 +74,7 @@ public class LoginActivity extends AppCompatActivity {
   }
 
   public void onLoginSuccess(String string) {
-    Snackbar.make(currentView, "Logged with success", 5000).show();
+    Snackbar.make(getCurrentFocus(), "Logged with success", 5000).show();
     Intent intent = new Intent(this, DashboardActivity.class);
 
     SharedPreferences userData = getSharedPreferences("userData", Context.MODE_PRIVATE);
@@ -84,7 +85,7 @@ public class LoginActivity extends AppCompatActivity {
   }
 
   public void onLoginError(String string) {
-    Snackbar.make(currentView, string, 5000).show();
+    Snackbar.make(getCurrentFocus(), string, 5000).show();
   }
 
   public void onRegisterClick(View view) {
@@ -93,7 +94,6 @@ public class LoginActivity extends AppCompatActivity {
   }
 
   public void onRecoverClick(View view) {
-//    System.out.println("clicked the recover password link");
     Intent intent = new Intent(this, RecoverPasswordActivity.class);
     startActivity(intent);
   }
