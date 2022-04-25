@@ -13,13 +13,10 @@
     android:theme="@style/Theme.AndroidOne"
     android:usesCleartextTraffic="true">
     <activity
-      android:name=".Views.BlogsActivity"
+      android:name=".Views.EchoesActivity"
       android:exported="false" />
     <activity
       android:name=".Views.RecoverPasswordActivity"
-      android:exported="false" />
-    <activity
-      android:name=".Views.DashboardActivity"
       android:exported="false" />
     <activity
       android:name=".RegisterActivity"

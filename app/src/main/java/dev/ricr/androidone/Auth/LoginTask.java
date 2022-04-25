@@ -12,8 +12,8 @@ public class LoginTask implements Executor {
   }
 
   private void handleLogin(String username, String password, LoginActivity c) {
-    String body = "{\"username\":\"" + username + "\", \"password\": \"" + password + "\" }";
-    HttpHandler http = new HttpHandler("http://10.0.2.2:4001/user/login", "POST", body);
+    String queryParams = "&username=" + username + "&password=" + password;
+    HttpHandler http = new HttpHandler("http://10.0.2.2:4001/index.php?type=login" + queryParams, "POST", "");
 
     if (http.getErrorCode() == 200) {
       c.onLoginSuccess(http.getServerResponse());

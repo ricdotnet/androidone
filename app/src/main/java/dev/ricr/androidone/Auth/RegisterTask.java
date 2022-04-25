@@ -12,12 +12,8 @@ public class RegisterTask implements Executor {
   }
 
   private void handleRegister(String username, String password, String email, RegisterActivity c) {
-    String body = "{\"username\":\"" + username
-        + "\", \"password\": \"" + password
-        + "\", \"email\": \"" + email
-        + "\" }";
-    System.out.println(body);
-    HttpHandler http = new HttpHandler("http://10.0.2.2:4001/user/register", "POST", body);
+    String queryParams = "&username=" + username + "&password=" + password + "&email=" + email;
+    HttpHandler http = new HttpHandler("http://10.0.2.2:4001/index.php?type=register" + queryParams, "GET", "");
 
     if (http.getErrorCode() == 200) {
       c.onRegisterSuccess(http.getServerResponse());

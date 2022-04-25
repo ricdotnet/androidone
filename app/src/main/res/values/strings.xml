@@ -15,8 +15,13 @@
   <string name="register_email_hint">Email</string>
   <string name="login_link">Login</string>
 
+  <!-- New Echo Fragment -->
+  <string name="post_echo_button">Post</string>
+  <string name="content_hint">Content</string>
+
   <!-- Bottom Menu -->
   <string name="menu_blogs">Blogs</string>
+  <string name="menu_echo">Post</string>
   <string name="menu_dashboard">Dashboard</string>
   <string name="menu_logout">Logout</string>
   <!-- TODO: Remove or change this placeholder text -->

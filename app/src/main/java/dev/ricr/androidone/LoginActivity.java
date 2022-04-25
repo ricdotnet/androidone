@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.Button;
 import android.widget.TextView;
@@ -16,8 +15,7 @@ import com.google.android.material.snackbar.Snackbar;
 
 import dev.ricr.androidone.Auth.LoginTask;
 import dev.ricr.androidone.Helpers.InputHelper;
-import dev.ricr.androidone.Views.BlogsActivity;
-import dev.ricr.androidone.Views.DashboardActivity;
+import dev.ricr.androidone.Views.EchoesActivity;
 import dev.ricr.androidone.Views.RecoverPasswordActivity;
 
 public class LoginActivity extends AppCompatActivity {
@@ -50,7 +48,7 @@ public class LoginActivity extends AppCompatActivity {
     String currentUser = userData.getString("username", null);
 
     if (currentUser != null) {
-      Intent intent = new Intent(this, BlogsActivity.class);
+      Intent intent = new Intent(this, EchoesActivity.class);
       startActivity(intent);
     }
   }
@@ -76,7 +74,7 @@ public class LoginActivity extends AppCompatActivity {
 
   public void onLoginSuccess(String string) {
     Snackbar.make(getCurrentFocus(), "Logged with success", 5000).show();
-    Intent intent = new Intent(this, BlogsActivity.class);
+    Intent intent = new Intent(this, EchoesActivity.class);
 
     SharedPreferences userData = getSharedPreferences("userData", Context.MODE_PRIVATE);
     userData.edit().putString("username", usernameInput.getText().toString()).apply();
