@@ -9,9 +9,9 @@ public class Echo {
   private final String username;
   private final String createdAt;
 
-  public Echo(String content, String username, String createdAt) {
-    this.content = content;
+  public Echo(String username, String content, String createdAt) {
     this.username = username;
+    this.content = content;
     this.createdAt = createdAt;
   }
 
@@ -20,7 +20,7 @@ public class Echo {
   }
 
   public String getUsername() {
-    return this.username;
+    return "@" + this.username;
   }
 
   public String getCreatedAt() {

@@ -19,7 +19,7 @@
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintHorizontal_bias="0.489"
     app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toBottomOf="@+id/username" />
+    app:layout_constraintTop_toBottomOf="@+id/created_at" />
 
   <Button
     android:id="@+id/post_echo_button"
@@ -32,7 +32,7 @@
     app:layout_constraintTop_toBottomOf="@+id/echo_content" />
 
   <TextView
-    android:id="@+id/username"
+    android:id="@+id/created_at"
     android:layout_width="131dp"
     android:layout_height="28dp"
     android:layout_marginTop="100dp"

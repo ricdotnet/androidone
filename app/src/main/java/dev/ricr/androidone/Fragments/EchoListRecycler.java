@@ -14,9 +14,14 @@ import dev.ricr.androidone.databinding.FragmentEchoBinding;
 
 public class EchoListRecycler extends RecyclerView.Adapter<EchoListRecycler.EchoView> {
 
-  private final ArrayList<Echo> echoes;
+  private ArrayList<Echo> echoes = new ArrayList<>();
 
   public EchoListRecycler(ArrayList<Echo> echoes) {
+    if (this.echoes.size() > 0) {
+      for (Echo e : this.echoes) {
+        this.echoes.remove(e);
+      }
+    }
     this.echoes = echoes;
   }
 

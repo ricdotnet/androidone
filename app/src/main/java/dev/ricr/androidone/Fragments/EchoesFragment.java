@@ -6,7 +6,6 @@ import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.os.Debug;
 import android.util.JsonReader;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,7 +19,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
-import java.util.Date;
 
 import dev.ricr.androidone.Echoes.EchoTask;
 import dev.ricr.androidone.Types.Echo;
@@ -40,23 +38,9 @@ public class EchoesFragment extends Fragment {
   public EchoesFragment() {
   }
 
-  // TODO: Customize parameter initialization
-//  @SuppressWarnings("unused")
-//  public static EchoesFragment newInstance(int columnCount) {
-//    EchoesFragment fragment = new EchoesFragment();
-//    Bundle args = new Bundle();
-//    args.putInt(ARG_COLUMN_COUNT, columnCount);
-//    fragment.setArguments(args);
-//    return fragment;
-//  }
-
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-
-//    if (getArguments() != null) {
-//      mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
-//    }
   }
 
   @Override
@@ -64,15 +48,9 @@ public class EchoesFragment extends Fragment {
                            Bundle savedInstanceState) {
     View view = inflater.inflate(R.layout.fragment_echoes_list, container, false);
 
-    // Set the adapter
     if (view instanceof RecyclerView) {
       Context context = view.getContext();
       RecyclerView recyclerView = (RecyclerView) view;
-//      if (mColumnCount <= 1) {
-//        recyclerView.setLayoutManager(new LinearLayoutManager(context));
-//      } else {
-//        recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
-//      }
       recyclerView.setAdapter(new EchoListRecycler(echoes));
     }
     return view;
@@ -83,9 +61,6 @@ public class EchoesFragment extends Fragment {
     super.onResume();
 
     new EchoTask().fetchEchoes(this);
-
-//    echo = echoes.getEchoesList().get(0);
-//    System.out.println(echo.getContent());
   }
 
   public void onFetchSuccess(String response) {
@@ -109,8 +84,6 @@ public class EchoesFragment extends Fragment {
   }
 
   private void readEchoes(JsonReader reader) {
-//    ArrayList<Echo> echoes = new ArrayList<>();
-
     try {
       reader.beginArray();
       while (reader.hasNext()) {
@@ -133,14 +106,19 @@ public class EchoesFragment extends Fragment {
       while (reader.hasNext()) {
         String name = reader.nextName();
 
-        if (name.equals("username")) {
-          username = reader.nextString();
-        } else if (name.equals("content")) {
-          content = reader.nextString();
-        } else if (name.equals("created_at")) {
-          createdAt = reader.nextString();
-        } else {
-          reader.skipValue();
+        switch (name) {
+          case "username":
+            username = reader.nextString();
+            break;
+          case "content":
+            content = reader.nextString();
+            break;
+          case "created_at":
+            createdAt = reader.nextString();
+            break;
+          default:
+            reader.skipValue();
+            break;
         }
       }
       reader.endObject();
