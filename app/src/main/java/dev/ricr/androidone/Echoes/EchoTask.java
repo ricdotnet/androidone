@@ -1,9 +1,12 @@
 package dev.ricr.androidone.Echoes;
 
+import java.io.BufferedReader;
 import java.util.concurrent.Executor;
 
+import dev.ricr.androidone.Fragments.EchoesFragment;
 import dev.ricr.androidone.Fragments.NewEchoFragment;
 import dev.ricr.androidone.Helpers.HttpHandler;
+import dev.ricr.androidone.Types.Echo;
 
 public class EchoTask implements Executor {
 
@@ -23,19 +26,18 @@ public class EchoTask implements Executor {
     }
   }
 
-  public void fetchEchoes() {
-    new Thread(() -> execute(this::handleFetch)).start();
+  public void fetchEchoes(EchoesFragment c) {
+    new Thread(() -> execute(() -> handleFetch(c))).start();
   }
 
-  private void handleFetch() {
+  private void handleFetch(EchoesFragment c) {
     HttpHandler http = new HttpHandler("http://10.0.2.2:4001/index.php?type=echo&action=get", "POST", "");
 
     if (http.getErrorCode() == 200) {
-      System.out.println(http.getServerResponse());
+      c.onFetchSuccess(http.getServerResponse());
     } else {
-      System.out.println("something went wrong...");
+      c.onFetchError(http.getServerResponse());
     }
-
   }
 
   @Override

@@ -7,9 +7,9 @@ public class Echo {
   // final because they are immutable
   private final String content;
   private final String username;
-  private final Date createdAt;
+  private final String createdAt;
 
-  public Echo(String content, String username, Date createdAt) {
+  public Echo(String content, String username, String createdAt) {
     this.content = content;
     this.username = username;
     this.createdAt = createdAt;
@@ -23,7 +23,7 @@ public class Echo {
     return this.username;
   }
 
-  public Date getCreatedAt() {
+  public String getCreatedAt() {
     return this.createdAt;
   }
 
