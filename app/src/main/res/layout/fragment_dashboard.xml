@@ -1,15 +1,87 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
   xmlns:tools="http://schemas.android.com/tools"
+  android:id="@+id/frameLayout2"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
-  tools:context=".Fragments.DashboardFragment">
+  tools:context=".Fragments.DashboardFragment"
+  tools:layout_editor_absoluteX="0dp"
+  tools:layout_editor_absoluteY="58dp">
 
-  <!-- TODO: Update blank fragment layout -->
-  <TextView
-    android:id="@+id/some_text"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:text="@string/hello_blank_fragment" />
+  <com.google.android.material.imageview.ShapeableImageView
+    android:id="@+id/dashboard_user_avatar"
+    android:layout_width="100dp"
+    android:layout_height="100dp"
+    android:layout_marginTop="72dp"
+    android:layout_marginEnd="144dp"
+    android:scaleType="centerCrop"
+    android:background="@drawable/dashboard_avatar"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintTop_toTopOf="parent"
+    app:shapeAppearanceOverlay="@style/user_avatar"
+    tools:ignore="ContentDescription" />
 
-</FrameLayout>
+  <com.google.android.material.textfield.TextInputEditText
+    android:id="@+id/dashboard_username"
+    android:layout_width="319dp"
+    android:layout_height="59dp"
+    android:layout_marginTop="16dp"
+    android:layout_marginEnd="31dp"
+    android:background="@drawable/echo_list_item_shape"
+    android:lines="1"
+    android:minHeight="48dp"
+    android:paddingHorizontal="10dp"
+    android:singleLine="true"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintHorizontal_bias="0.754"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@+id/dashboard_user_avatar" />
+
+  <com.google.android.material.textfield.TextInputEditText
+    android:id="@+id/dashboard_first_name"
+    android:layout_width="319dp"
+    android:layout_height="59dp"
+    android:layout_marginTop="16dp"
+    android:layout_marginEnd="31dp"
+    android:background="@drawable/echo_list_item_shape"
+    android:hint="@string/dashboard_first_name"
+    android:lines="1"
+    android:minHeight="48dp"
+    android:paddingHorizontal="10dp"
+    android:singleLine="true"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintHorizontal_bias="0.754"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@+id/dashboard_username" />
+
+  <com.google.android.material.textfield.TextInputEditText
+    android:id="@+id/dashboard_last_name"
+    android:layout_width="319dp"
+    android:layout_height="59dp"
+    android:layout_marginTop="16dp"
+    android:layout_marginEnd="31dp"
+    android:background="@drawable/echo_list_item_shape"
+    android:hint="@string/dashboard_last_name"
+    android:lines="1"
+    android:minHeight="48dp"
+    android:paddingHorizontal="10dp"
+    android:singleLine="true"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintHorizontal_bias="0.754"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@+id/dashboard_first_name" />
+
+  <Button
+    android:id="@+id/dashboard_save"
+    android:layout_width="319dp"
+    android:layout_height="71dp"
+    android:layout_marginTop="16dp"
+    android:layout_marginEnd="32dp"
+    android:text="@string/dashboard_save"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintHorizontal_bias="0.766"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@+id/dashboard_last_name" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

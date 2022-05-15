@@ -12,14 +12,17 @@
     android:layout_width="320dp"
     android:layout_height="156dp"
     android:layout_marginTop="60dp"
+    android:background="@drawable/echo_list_item_shape"
+    android:gravity="top"
     android:hint="@string/content_hint"
     android:inputType="textMultiLine"
+    android:lines="10"
+    android:padding="20dp"
     android:singleLine="false"
-    android:textAlignment="textStart"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintHorizontal_bias="0.489"
     app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toBottomOf="@+id/created_at" />
+    app:layout_constraintTop_toBottomOf="@+id/username" />
 
   <Button
     android:id="@+id/post_echo_button"
@@ -32,14 +35,28 @@
     app:layout_constraintTop_toBottomOf="@+id/echo_content" />
 
   <TextView
-    android:id="@+id/created_at"
+    android:id="@+id/username"
     android:layout_width="131dp"
     android:layout_height="28dp"
-    android:layout_marginTop="100dp"
+    android:layout_marginTop="104dp"
     android:lineSpacingExtra="20sp"
     android:textAlignment="center"
     android:textSize="20sp"
     app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintHorizontal_bias="0.164"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent" />
+
+  <TextView
+    android:id="@+id/today"
+    android:layout_width="131dp"
+    android:layout_height="28dp"
+    android:layout_marginTop="108dp"
+    android:lineSpacingExtra="20sp"
+    android:textAlignment="center"
+    android:textSize="20sp"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintHorizontal_bias="0.835"
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toTopOf="parent" />
 

@@ -84,6 +84,11 @@ public class EchoesFragment extends Fragment {
   }
 
   private void readEchoes(JsonReader reader) {
+
+    if (this.echoes.size() > 0) {
+      this.echoes = new ArrayList<>();
+    }
+
     try {
       reader.beginArray();
       while (reader.hasNext()) {

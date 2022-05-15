@@ -11,7 +11,7 @@ import android.widget.TextView;
 
 import com.google.android.material.snackbar.Snackbar;
 
-import dev.ricr.androidone.Auth.RegisterTask;
+import dev.ricr.androidone.Tasks.RegisterTask;
 import dev.ricr.androidone.Helpers.InputHelper;
 
 public class RegisterActivity extends AppCompatActivity {

@@ -1,12 +1,13 @@
 package dev.ricr.androidone.Echoes;
 
-import java.io.BufferedReader;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.concurrent.Executor;
 
 import dev.ricr.androidone.Fragments.EchoesFragment;
 import dev.ricr.androidone.Fragments.NewEchoFragment;
 import dev.ricr.androidone.Helpers.HttpHandler;
-import dev.ricr.androidone.Types.Echo;
 
 public class EchoTask implements Executor {
 
@@ -15,7 +16,26 @@ public class EchoTask implements Executor {
   }
 
   private void handlePosting(String username, String content, NewEchoFragment c) {
-    String body = "{\"username\": \"" + username + "\", \"content\": \"" + content + "\"}";
+    String[] strings = content.split("\n");
+
+    StringBuilder finalContent = new StringBuilder();
+    for (String s : strings) {
+      finalContent.append(s).append("\n");
+    }
+
+    String body = "";
+    JSONObject json = new JSONObject();
+    try {
+      json.put("username", username);
+      json.put("content", content);
+      body = json.toString();
+    } catch (JSONException e) {
+      e.printStackTrace();
+    }
+
+    if (body.isEmpty()) {
+      c.onPostError("Something went wrong.");
+    }
 
     HttpHandler http = new HttpHandler("http://10.0.2.2:4001/index.php?type=echo&action=post", "POST", body);
 

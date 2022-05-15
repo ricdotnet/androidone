@@ -3,4 +3,10 @@
   <style name="Widget.Theme.AndroidOne.ButtonBar.Fullscreen" parent="">
     <item name="android:buttonBarStyle">?android:attr/buttonBarStyle</item>
   </style>
+
+  <style name="user_avatar">
+    <item name="cornerFamily">rounded</item>
+    <item name="cornerSize">50dp</item>
+    <item name="color">@color/white</item>
+  </style>
 </resources>

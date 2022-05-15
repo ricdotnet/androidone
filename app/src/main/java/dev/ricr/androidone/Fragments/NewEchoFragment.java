@@ -16,6 +16,10 @@ import android.widget.TextView;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
 import dev.ricr.androidone.Echoes.EchoTask;
 import dev.ricr.androidone.R;
 import dev.ricr.androidone.Views.EchoesActivity;
@@ -23,6 +27,7 @@ import dev.ricr.androidone.Views.EchoesActivity;
 public class NewEchoFragment extends Fragment implements View.OnClickListener {
 
   TextView username;
+  TextView today;
   TextInputEditText contentInput;
   Button postEchoButton;
 
@@ -42,11 +47,16 @@ public class NewEchoFragment extends Fragment implements View.OnClickListener {
     SharedPreferences userData = requireActivity().getSharedPreferences("userData", Context.MODE_PRIVATE);
 
     View view = inflater.inflate(R.layout.fragment_new_echo, container, false);
-    username = view.findViewById(R.id.created_at);
+    username = view.findViewById(R.id.username);
+    today = view.findViewById(R.id.today);
     contentInput = view.findViewById(R.id.echo_content);
     postEchoButton = view.findViewById(R.id.post_echo_button);
 
-    username.setText(userData.getString("username", null));
+    SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy", Locale.UK);
+    today.setText(dateFormat.format(new Date()));
+    today.setTextSize(15);
+
+    username.setText(new String("@" + userData.getString("username", null)));
     postEchoButton.setOnClickListener(this);
 
     return view;
@@ -55,6 +65,11 @@ public class NewEchoFragment extends Fragment implements View.OnClickListener {
   @Override
   public void onClick(View view) {
     if (view.getId() == R.id.post_echo_button) {
+      if (contentInput.getText().toString().isEmpty()) {
+        Snackbar.make(requireView(), "Cannot post an empty echo.", 5000).show();
+        return;
+      }
+
       new EchoTask().postEcho(username.getText().toString(), contentInput.getText().toString(), this);
     }
   }

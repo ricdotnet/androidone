@@ -19,6 +19,11 @@
   <string name="post_echo_button">Post</string>
   <string name="content_hint">Content</string>
 
+  <!-- Dashboard Fragment -->
+  <string name="dashboard_first_name">First Name</string>
+  <string name="dashboard_last_name">Last Name</string>
+  <string name="dashboard_save">Save</string>
+
   <!-- Bottom Menu -->
   <string name="menu_blogs">Blogs</string>
   <string name="menu_echo">Post</string>

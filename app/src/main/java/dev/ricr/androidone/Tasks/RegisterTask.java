@@ -1,4 +1,4 @@
-package dev.ricr.androidone.Auth;
+package dev.ricr.androidone.Tasks;
 
 import java.util.concurrent.Executor;
 

@@ -13,7 +13,7 @@ import android.widget.TextView;
 
 import com.google.android.material.snackbar.Snackbar;
 
-import dev.ricr.androidone.Auth.LoginTask;
+import dev.ricr.androidone.Tasks.LoginTask;
 import dev.ricr.androidone.Helpers.InputHelper;
 import dev.ricr.androidone.Views.EchoesActivity;
 import dev.ricr.androidone.Views.RecoverPasswordActivity;

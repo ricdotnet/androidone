@@ -2,22 +2,19 @@ package dev.ricr.androidone.Helpers;
 
 import java.util.concurrent.Executor;
 
-public class AsyncRunner {
+public class AsyncRunner<T> implements Executor {
 
-  /**
-   * @param executor = the main thread
-   * @param fn       = function to run
-   * @param delay    = delay in ms
-   */
-  public static void setTimeout(Executor executor, Runnable fn, int delay) {
-    new Thread(() -> {
-      try {
-        Thread.sleep(delay);
-        executor.execute(fn);
-      } catch (Exception e) {
-        e.printStackTrace();
-      }
-    }).start();
+  public void runner(T c) {
+    new Thread(() -> execute(() -> handler(c))).start();
+  }
+
+  private void handler(T c) {
+    System.out.println("something ran...");
+  }
+
+  @Override
+  public void execute(Runnable runnable) {
+    runnable.run();
   }
 
 }

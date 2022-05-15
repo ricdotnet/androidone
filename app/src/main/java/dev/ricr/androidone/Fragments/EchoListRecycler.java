@@ -1,5 +1,8 @@
 package dev.ricr.androidone.Fragments;
 
+import android.text.SpannableString;
+import android.text.TextUtils;
+import android.text.style.AbsoluteSizeSpan;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -7,7 +10,9 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Locale;
 
 import dev.ricr.androidone.Types.Echo;
 import dev.ricr.androidone.databinding.FragmentEchoBinding;
@@ -34,9 +39,23 @@ public class EchoListRecycler extends RecyclerView.Adapter<EchoListRecycler.Echo
   @Override
   public void onBindViewHolder(@NonNull EchoListRecycler.EchoView holder, int position) {
     holder.echo = echoes.get(position);
-    holder.username.setText(holder.echo.getUsername());
+
+    SpannableString username = new SpannableString(holder.echo.getUsername());
+    username.setSpan(new AbsoluteSizeSpan(60), 0, holder.echo.getUsername().length(), 0); // set size
+
+    DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("dd-MM-yyyy", Locale.UK);
+
+    String[] dateNumbers = holder.echo.getCreatedAt().split(" ")[0].split("-");
+    StringBuilder newDate = new StringBuilder();
+    newDate.append(dateNumbers[2]).append("-").append(dateNumbers[1]).append("-").append(dateNumbers[0]);
+
+    SpannableString createdAt = new SpannableString(newDate.toString());
+    createdAt.setSpan(new AbsoluteSizeSpan(40), 0, newDate.toString().length(), 0); // set size
+
+    CharSequence finalEchoTop = TextUtils.concat(username, " - ", createdAt);
+
+    holder.echoTop.setText(finalEchoTop);
     holder.content.setText(holder.echo.getContent());
-    holder.createdAt.setText(holder.echo.getCreatedAt().toString());
   }
 
   @Override
@@ -46,16 +65,16 @@ public class EchoListRecycler extends RecyclerView.Adapter<EchoListRecycler.Echo
 
   public class EchoView extends RecyclerView.ViewHolder {
 
-    public final TextView username;
+    public final TextView echoTop;
     public final TextView content;
-    public final TextView createdAt;
+    //    public final TextView createdAt;
     public Echo echo;
 
     public EchoView(FragmentEchoBinding binding) {
       super(binding.getRoot());
-      username = binding.username;
+      echoTop = binding.echoTop;
       content = binding.content;
-      createdAt = binding.createdAt;
+//      createdAt = binding.createdAt;
     }
 
     @Override
