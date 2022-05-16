@@ -3,14 +3,18 @@ package dev.ricr.androidone.Fragments;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.os.Handler;
+import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.android.material.snackbar.Snackbar;
@@ -21,6 +25,7 @@ import java.util.Date;
 import java.util.Locale;
 
 import dev.ricr.androidone.Echoes.EchoTask;
+import dev.ricr.androidone.Helpers.ResolveUserAvatar;
 import dev.ricr.androidone.R;
 import dev.ricr.androidone.Views.EchoesActivity;
 
@@ -30,6 +35,10 @@ public class NewEchoFragment extends Fragment implements View.OnClickListener {
   TextView today;
   TextInputEditText contentInput;
   Button postEchoButton;
+
+  private ImageView userAvatar;
+
+  SharedPreferences userData;
 
   public NewEchoFragment() {
     // Required empty public constructor
@@ -44,7 +53,7 @@ public class NewEchoFragment extends Fragment implements View.OnClickListener {
   public View onCreateView(LayoutInflater inflater, ViewGroup container,
                            Bundle savedInstanceState) {
 
-    SharedPreferences userData = requireActivity().getSharedPreferences("userData", Context.MODE_PRIVATE);
+    userData = requireActivity().getSharedPreferences("userData", Context.MODE_PRIVATE);
 
     View view = inflater.inflate(R.layout.fragment_new_echo, container, false);
     username = view.findViewById(R.id.username);
@@ -59,6 +68,12 @@ public class NewEchoFragment extends Fragment implements View.OnClickListener {
     username.setText(new String("@" + userData.getString("username", null)));
     postEchoButton.setOnClickListener(this);
 
+    userAvatar = view.findViewById(R.id.new_echo_avatar);
+
+    if (!userData.getString("avatar", null).isEmpty()) {
+      resolveAvatar();
+    }
+
     return view;
   }
 
@@ -70,7 +85,8 @@ public class NewEchoFragment extends Fragment implements View.OnClickListener {
         return;
       }
 
-      new EchoTask().postEcho(username.getText().toString(), contentInput.getText().toString(), this);
+      SharedPreferences userData = this.requireContext().getSharedPreferences("userData", Context.MODE_PRIVATE);
+      new EchoTask().postEcho(userData.getString("username", null), contentInput.getText().toString(), this);
     }
   }
 
@@ -86,5 +102,20 @@ public class NewEchoFragment extends Fragment implements View.OnClickListener {
 
   public void onPostError(String response) {
     Snackbar.make(requireView(), response, 5000).show();
+  }
+
+  public void resolveAvatar() {
+    String userAvatar = "http://10.0.2.2:4001/images/" + userData.getString("avatar", null);
+    ResolveUserAvatar.loadBitmap(userAvatar, this);
+  }
+
+  public void setUserAvatarCallback(Bitmap bitmap) {
+    new Handler(Looper.getMainLooper()).post(() ->  {
+      try {
+        userAvatar.setImageBitmap(bitmap);
+      } catch (RuntimeException e) {
+        System.out.println("trying to draw an image too large...");
+      }
+    });
   }
 }

@@ -14,13 +14,14 @@ import java.net.URL;
 import java.util.concurrent.Executor;
 
 import dev.ricr.androidone.Fragments.DashboardFragment;
+import dev.ricr.androidone.Fragments.NewEchoFragment;
 
 public class ResolveUserAvatar {
 
   static String url;
   static Bitmap avatarBitmap;
 
-  public static void loadBitmap(String url, DashboardFragment df) {
+  public static void loadBitmap(String url, Object df) {
     ResolveUserAvatar.url = url;
 
     new UserAvatarTask().runner(df);
@@ -28,11 +29,11 @@ public class ResolveUserAvatar {
 
   static class UserAvatarTask implements Executor {
 
-    public void runner(DashboardFragment df) {
+    public void runner(Object df) {
       new Thread(() -> execute(() -> downloadInBackground(df))).start();
     }
 
-    private void downloadInBackground(DashboardFragment df) {
+    private void downloadInBackground(Object df) {
       Bitmap bitmap = null;
       InputStream in = null;
       BufferedOutputStream out = null;
@@ -52,12 +53,17 @@ public class ResolveUserAvatar {
         bitmap = BitmapFactory.decodeByteArray(data, 0, data.length, options);
         in.close();
         out.close();
-      } catch (IOException e) {
+      } catch (IOException | RuntimeException e) {
+        System.out.println("avatar is to large...");
 //      Log.e(TAG, "Could not load Bitmap from: " + url);
       }
 
       ResolveUserAvatar.avatarBitmap = bitmap;
-      df.setUserAvatarCallback(bitmap);
+      if (df instanceof DashboardFragment) {
+        ((DashboardFragment) df).setUserAvatarCallback(bitmap);
+      } else if (df instanceof NewEchoFragment) {
+        ((NewEchoFragment) df).setUserAvatarCallback(bitmap);
+      }
     }
 
     @Override

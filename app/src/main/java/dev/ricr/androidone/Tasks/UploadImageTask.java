@@ -12,14 +12,16 @@ import java.net.URL;
 import java.text.ParseException;
 import java.util.concurrent.Executor;
 
+import dev.ricr.androidone.Fragments.DashboardFragment;
+
 public class UploadImageTask implements Executor {
 
   private String uploadEndpoint = "http://10.0.2.2:4001/index.php?type=avatar";
 
-  public void uploadAvatar(String filePath) {
+  public void uploadAvatar(String username, String filePath, DashboardFragment c) {
     new Thread(() -> execute(() -> {
       try {
-        multipartRequest(uploadEndpoint, filePath);
+        multipartRequest(username, uploadEndpoint, filePath, c);
       } catch (ParseException e) {
         e.printStackTrace();
       } catch (IOException e) {
@@ -28,7 +30,7 @@ public class UploadImageTask implements Executor {
     })).start();
   }
 
-  public String multipartRequest(String urlTo, String filepath) throws ParseException, IOException {
+  public String multipartRequest(String username, String urlTo, String filepath, DashboardFragment c) throws ParseException, IOException {
     HttpURLConnection connection = null;
     DataOutputStream outputStream = null;
     InputStream inputStream = null;
@@ -50,7 +52,8 @@ public class UploadImageTask implements Executor {
       File file = new File(filepath);
       FileInputStream fileInputStream = new FileInputStream(file);
 
-      URL url = new URL(urlTo);
+      String queryParam = "&username=" + username;
+      URL url = new URL(urlTo + queryParam);
       connection = (HttpURLConnection) url.openConnection();
 
       connection.setDoInput(true);
@@ -101,7 +104,9 @@ public class UploadImageTask implements Executor {
       inputStream = connection.getInputStream();
       result = this.convertStreamToString(inputStream);
 
-      System.out.println(result);
+      if (connection.getResponseCode() == 200) {
+        c.onAvatarUploadSuccess(result);
+      }
 
       fileInputStream.close();
       inputStream.close();

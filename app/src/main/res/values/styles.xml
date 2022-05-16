@@ -6,7 +6,13 @@
 
   <style name="user_avatar">
     <item name="cornerFamily">rounded</item>
-    <item name="cornerSize">50dp</item>
+    <item name="cornerSize">97dp</item>
+    <item name="color">@color/white</item>
+  </style>
+
+  <style name="new_echo_avatar">
+    <item name="cornerFamily">rounded</item>
+    <item name="cornerSize">20dp</item>
     <item name="color">@color/white</item>
   </style>
 </resources>

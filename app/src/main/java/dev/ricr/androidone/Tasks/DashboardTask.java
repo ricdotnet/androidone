@@ -7,13 +7,13 @@ import dev.ricr.androidone.Helpers.HttpHandler;
 
 public class DashboardTask implements Executor {
 
-  public void doSaveProfile(String username, String password, String email, DashboardFragment c) {
-    new Thread(() -> execute(() -> handleSaveProfile(username, password, email, c))).start();
+  public void doSaveProfile(String username, String firstName, String lastName, DashboardFragment c) {
+    new Thread(() -> execute(() -> handleSaveProfile(username, firstName, lastName, c))).start();
   }
 
-  private void handleSaveProfile(String username, String password, String email, DashboardFragment c) {
-    String queryParams = "&username=" + username + "&password=" + password + "&email=" + email;
-    HttpHandler http = new HttpHandler("http://10.0.2.2:4001/index.php?type=register" + queryParams, "GET", "");
+  private void handleSaveProfile(String username, String firstName, String lastName, DashboardFragment c) {
+    String queryParams = "&username=" + username + "&firstName=" + firstName + "&lastName=" + lastName;
+    HttpHandler http = new HttpHandler("http://10.0.2.2:4001/index.php?type=profile" + queryParams, "GET", "");
 
     if (http.getErrorCode() == 200) {
       c.onUpdateSuccess(http.getServerResponse());

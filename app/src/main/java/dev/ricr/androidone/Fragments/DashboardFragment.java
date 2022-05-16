@@ -24,8 +24,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.Toast;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.util.Objects;
@@ -35,6 +39,7 @@ import dev.ricr.androidone.Helpers.AsyncRunner;
 import dev.ricr.androidone.Helpers.RealPathUtil;
 import dev.ricr.androidone.Helpers.ResolveUserAvatar;
 import dev.ricr.androidone.R;
+import dev.ricr.androidone.Tasks.DashboardTask;
 import dev.ricr.androidone.Tasks.UploadImageTask;
 
 public class DashboardFragment extends Fragment implements View.OnClickListener {
@@ -70,18 +75,22 @@ public class DashboardFragment extends Fragment implements View.OnClickListener 
     firstName = view.findViewById(R.id.dashboard_first_name);
     lastName = view.findViewById(R.id.dashboard_last_name);
 
+    if (!userData.getString("firstName", null).isEmpty()
+        && !userData.getString("lastName", null).isEmpty()) {
+      firstName.setText(userData.getString("firstName", null));
+      lastName.setText(userData.getString("lastName", null));
+    }
+
     userAvatar = view.findViewById(R.id.dashboard_user_avatar);
     saveButton = view.findViewById(R.id.dashboard_save);
 
     userAvatar.setOnClickListener(this);
     saveButton.setOnClickListener(this);
 
-//    if (userData.getString("avatar", null) != null) {
-//      System.out.println("there is an avatar....");
-//      userAvatar.setImageURI(Uri.parse(userData.getString("avatar", null)));
-//    userAvatar.setImageBitmap(ResolveUserAvatar.loadBitmap("https://avatars.dicebear.com/api/male/ricdotnet.png"));
-    ResolveUserAvatar.loadBitmap("https://avatars.dicebear.com/api/male/ricdotnet.png", this);
-//    }
+    if (userData.getString("avatar", null) != null) {
+      String userAvatarUrl = "http://10.0.2.2:4001/images/" + userData.getString("avatar", null);
+      ResolveUserAvatar.loadBitmap(userAvatarUrl, this);
+    }
 
     return view;
   }
@@ -93,19 +102,27 @@ public class DashboardFragment extends Fragment implements View.OnClickListener 
         selectImage();
         break;
       case R.id.dashboard_save:
-        System.out.println("saving details...");
+        updateUserDetails();
         break;
     }
   }
 
-  void selectImage() {
-    // create an instance of the
-    // intent of the type image
+  public void updateUserDetails() {
+    String newUsername = username.getText().toString();
+    String newFirstName = firstName.getText().toString();
+    String newLastName = lastName.getText().toString();
+
+    if (newUsername.trim().isEmpty() || newFirstName.trim().isEmpty() || newLastName.trim().isEmpty()) {
+      Snackbar.make(requireView(), "Please fill all details", 5000).show();
+      return;
+    }
+
+    new DashboardTask().doSaveProfile(newUsername, newFirstName, newLastName, this);
+  }
+
+  public void selectImage() {
     Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
     photoPickerIntent.setType("image/*");
-//    startActivityForResult(photoPickerIntent, RESULT_LOAD_IMG);
-    // pass the constant to compare it
-    // with the returned requestCode
     startActivityForResult(photoPickerIntent, 200);
   }
 
@@ -114,18 +131,13 @@ public class DashboardFragment extends Fragment implements View.OnClickListener 
 
     if (resultCode == Activity.RESULT_OK) {
 
-      // compare the resultCode with the
-      // SELECT_PICTURE constant
       if (requestCode == 200) {
-        // Get the url of the image from data
         Uri selectedImageUri = data.getData();
 
         if (null != selectedImageUri) {
-//          System.out.println(selectedImageUri);
-          new UploadImageTask().uploadAvatar(getPath(selectedImageUri));
-          // update the preview image in the layout
-          userData.edit().putString("avatar", selectedImageUri.toString()).apply();
-          userAvatar.setImageURI(selectedImageUri);
+          new UploadImageTask().uploadAvatar(userData.getString("username", null), getPath(selectedImageUri), this);
+//          userData.edit().putString("avatar", selectedImageUri.toString()).apply();
+//          userAvatar.setImageURI(selectedImageUri);
         }
       }
     }
@@ -133,7 +145,6 @@ public class DashboardFragment extends Fragment implements View.OnClickListener 
 
   public String getPath(Uri uri) {
     String[] projection = {MediaStore.Images.Media.DATA};
-//    Cursor cursor = this.getContext().getContentResolver(uri, projection, null, null, null);
     Cursor cursor = this.getContext().getContentResolver().query(uri, projection, null, null, null);
     if (cursor == null) return null;
     int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
@@ -143,21 +154,29 @@ public class DashboardFragment extends Fragment implements View.OnClickListener 
     return s;
   }
 
+  public void onAvatarUploadSuccess(String response) {
+    userData.edit().putString("avatar", response).apply();
+
+    String userAvatar = "http://10.0.2.2:4001/images/" + response;
+    ResolveUserAvatar.loadBitmap(userAvatar, this);
+  }
+
   public void setUserAvatarCallback(Bitmap bitmap) {
-    new Handler(Looper.getMainLooper()).post(new Runnable() {
-      @Override
-      public void run() {
-        userAvatar.setImageBitmap(bitmap);
+    new Handler(Looper.getMainLooper()).post(() ->  {
+      try {
+          userAvatar.setImageBitmap(bitmap);
+      } catch (RuntimeException e) {
+        System.out.println("trying to draw an image too large...");
       }
     });
   }
 
   public void onUpdateSuccess(String message) {
-
+    Snackbar.make(this.requireView(), message, 5000).show();
   }
 
   public void onUpdateError(String message) {
-
+    Snackbar.make(this.requireView(), message, 5000).show();
   }
 
 }
